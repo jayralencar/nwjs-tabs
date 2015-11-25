@@ -1,0 +1,30 @@
+{
+  "name": "Pacman",
+  "version": "v0.0.1",
+  "description": "Joguinho",
+  "main": "index.html",
+  "private": true,
+  "keywords": [
+    "node",
+    "webkit",
+    "dashbaord",
+    "win",
+    "osx"
+  ],
+  "window": {
+    "toolbar": true,
+    "devtools": true,
+    "resizable": true,
+    "width": 1300,
+    "height": 750,
+    "min_width": 600,
+    "min_height": 400,
+    "position": "center"
+  },
+  "author": "Jayr Alencar",
+  "dependencies": {
+  },
+  "webkit": {
+        "plugin": true
+    }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "nwjs-tabs",
+  "description": "Module to tab based applications in nwjs",
+  "readmeFilename": "README.md",
+  "keywords": [
+    "nwjs",
+    "tabs",
+    "node-webkit",
+    "tabbased"
+  ],
+  "tags": [
+    "nwjs",
+    "tabs",
+    "node-webkit",
+    "tabbased"
+  ],
+  "version": "0.0.1",
+  "author": {
+    "name": "Jayr Alencar",
+    "email": "jayralencarpereira@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JayrAlencar/nwjs-tabs"
+  },
+  "dependencies": {
+    "jquery":"2.1.4",
+    "ejs": "2.3.4",
+    "jade": "1.11.0"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8.0",
+    "nwjs": ">=0.12.3"
+  },
+  "main": "nwjs-tabs.js"
+}
