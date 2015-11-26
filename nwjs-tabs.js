@@ -14,6 +14,7 @@ nwjstabs.prototype.tabContainer = null;
 nwjstabs.prototype.tabNav = null;
 nwjstabs.prototype.tabContent = null;
 nwjstabs.prototype.tabs = [];
+nwjstabs.prototype.tabSettings = [];
 
 
 nwjstabs.prototype.controllers = path.resolve(__dirname,'../../controllers');
@@ -42,6 +43,8 @@ nwjstabs.prototype.addTab = function(options){
 	if(this.tabs.indexOf(options.id)>=0){
 
 	}else{
+
+		this.tabSettings.push(options);
 		this.tabs.push(options.id);
 
 		btn_close = $('<button/>',{
@@ -51,14 +54,21 @@ nwjstabs.prototype.addTab = function(options){
 			closer = $(this);     
 			a = closer.parent();
 			href = a.attr('href');
-			a.parent(	).remove(); 
+			a.parent().remove(); 
 			var ativo = $(href).hasClass('active');
 			$(href).remove();
 			var idx = href.substring(1)
 			self.tabs.splice(self.tabs.indexOf(idx),1);
-			if(ativo){
-				$('.nav-tabs li:eq(0) a').tab('show');	
+			for(var i = 0 ; i < self.tabSettings.length; i++){
+				if(idx == self.tabSettings[i].id){
+					self.tabSettings.splice(i,1);
+				}
 			}
+			console.log(self.tabSettings)
+
+			// if(ativo){
+			// 	$('.nav-tabs li:eq(0) a').tab('show');	
+			// }
 		});
 
 		this.tabNav.find('.active').removeClass('active');
@@ -113,16 +123,34 @@ nwjstabs.prototype.addTab = function(options){
 
 		var view = require(self.view_engine);
 
+		var thisTab = {
+			id: options.id,
+			controller: options.controller,
+			close: function(){
+				btn_close.trigger('click');
+			},
+			refresh: function(){
+				// controller = require(self.controllers+"/"+options.controller);
+				// controller.controller(res)
+				window.alert('df')
+			}
+		}
+		console.log(thisTab)
+
 		var res = {
 			render : function(str,options){
-				 if(self.view_engine == 'ejs'){
+				options = options || {};
+				options.thisTab = thisTab;
+				if(self.view_engine == 'ejs'){
 				 	var html = view.compile(str, options);
-				 }else if(self.view_engine == 'jade'){
+				}else if(self.view_engine == 'jade'){
 				 	var html = view.render(str, options);
-				 }
-				 content.append(html).addClass('active')
+				}
+				content.html(html).addClass('active')
 			},
 			renderFile : function(str, options){
+				options = options || {};
+				options.thisTab = thisTab;
 				if(self.view_engine == 'ejs'){
 					var templateString = fs.readFileSync(path.join(self.views,str+'.ejs'), 'utf-8');
 					var html = view.render(templateString, options);
@@ -130,8 +158,12 @@ nwjstabs.prototype.addTab = function(options){
 				 	var html = view.renderFile(path.join(self.views,str+'.jade'), options);
 				}
 
+				var tab  = $('<div/>').html(html);
+				
 
-				content.append(html).addClass('active');
+				tab.find('script').prepend('var a = 1;');
+
+				content.html(tab.html()).addClass('active');
 			}
 		}
 
