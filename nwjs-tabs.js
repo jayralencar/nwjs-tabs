@@ -1,15 +1,12 @@
 var path = require('path');
 var $ = require('jquery');
+var fs = require('fs');
 
 var app = $('app');
 
 
 function nwjstabs () {
-	$('head').append('<link rel="stylesheet" href="'+__dirname+'/bootstrap/css/bootstrap.css" type="text/css" />');
 	$('head').append('<link rel="stylesheet" href="'+__dirname+'/style.css" type="text/css" />');
-	$('head').append('<script type="text/javascript" src="'+__dirname+'/node_modules/jquery/dist/jquery.js"></script>');
-	$('head').append('<script type="text/javascript" src="'+__dirname+'/bootstrap/js/bootstrap.js"></script>');
-
 	this.drawTabs();
 }
 
@@ -58,7 +55,7 @@ nwjstabs.prototype.addTab = function(options){
 			var ativo = $(href).hasClass('active');
 			$(href).remove();
 			var idx = href.substring(1)
-			tabs.splice(tabs.indexOf(idx),1);
+			self.tabs.splice(self.tabs.indexOf(idx),1);
 			if(ativo){
 				$('.nav-tabs li:eq(0) a').tab('show');	
 			}
@@ -104,10 +101,15 @@ nwjstabs.prototype.addTab = function(options){
 		}).append(ancora));
 
 		//Content
+
+		self.tabContent.find('.active').removeClass('active');
+
 		var content = $('<div/>', {
-			class:'tab-pane active',
+			class:'tab-pane',
 			id: options.id
 		});
+
+		self.tabContent.append(content);
 
 		var view = require(self.view_engine);
 
@@ -115,14 +117,21 @@ nwjstabs.prototype.addTab = function(options){
 			render : function(str,options){
 				 if(self.view_engine == 'ejs'){
 				 	var html = view.compile(str, options);
-				 	content.append(html).appendTo(self.tabContainer);
 				 }else if(self.view_engine == 'jade'){
 				 	var html = view.render(str, options);
-				 	content.append(html).appendTo(self.tabContainer);
 				 }
+				 content.append(html).addClass('active')
 			},
 			renderFile : function(str, options){
-				
+				if(self.view_engine == 'ejs'){
+					var templateString = fs.readFileSync(path.join(self.views,str+'.ejs'), 'utf-8');
+					var html = view.render(templateString, options);
+				}else if(self.view_engine == 'jade'){
+				 	var html = view.renderFile(path.join(self.views,str+'.jade'), options);
+				}
+
+
+				content.append(html).addClass('active');
 			}
 		}
 

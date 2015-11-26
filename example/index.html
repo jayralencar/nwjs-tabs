@@ -2,20 +2,31 @@
 <head>
 	<title>Bootstrap TABS</title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="dist/css/bootstrap.css">
 </head>
 <body style="margin: 10px">
 	<app></app>
 </body>
 
-<script type="text/javascript">
+<script type="text/javascript" src="dist/js/jquery.js"></script>
+<script type="text/javascript" src="dist/js/bootstrap.js"></script>
 
+<script type="text/javascript">
 var app = require('../nwjs-tabs.js');
-// app.view_engine = 'jade';
+
+app.view_engine = 'jade';
 app.controllers = process.cwd()+"/controllers";
+app.views = process.cwd()+"/views";
 app.addTab({
 	id: 'teste',
 	title: "Teste",
 	controller: 'teste'
+});
+
+app.addTab({
+	id: 'testefile',
+	title: "Test File",
+	controller: 'testFile'
 });
 
 </script>

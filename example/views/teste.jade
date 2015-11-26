@@ -1,0 +1,16 @@
+h2 Users
+table(class='table table-striped')
+	thead
+		tr
+			th Id
+			th Name
+			th E-mail
+	tbody
+		for user in users
+			tr
+				td
+					=user.id
+				td
+					=user.name
+				td
+					=user.email
